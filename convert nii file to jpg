@@ -1,0 +1,217 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "Untitled10.ipynb",
+      "provenance": [],
+      "authorship_tag": "ABX9TyOtDof0qehMq86AYayIXDhx",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/npourshahrokhi/mask--rcnn/blob/main/convert%20nii%20file%20to%20jpg\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 1000
+        },
+        "id": "x0oTlpYKyMyd",
+        "outputId": "b5bb8781-10f4-43ef-de3b-3dbdc5439ef5"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/\n",
+            "Collecting med2image\n",
+            "  Downloading med2image-2.6.6.tar.gz (22 kB)\n",
+            "Collecting pfmisc\n",
+            "  Downloading pfmisc-2.2.10.tar.gz (41 kB)\n",
+            "\u001b[K     |████████████████████████████████| 41 kB 303 kB/s \n",
+            "\u001b[?25hRequirement already satisfied: nibabel in /usr/local/lib/python3.7/dist-packages (from med2image) (3.0.2)\n",
+            "Collecting pydicom\n",
+            "  Downloading pydicom-2.3.0-py3-none-any.whl (2.0 MB)\n",
+            "\u001b[K     |████████████████████████████████| 2.0 MB 9.3 MB/s \n",
+            "\u001b[?25hRequirement already satisfied: numpy in /usr/local/lib/python3.7/dist-packages (from med2image) (1.21.6)\n",
+            "Requirement already satisfied: matplotlib in /usr/local/lib/python3.7/dist-packages (from med2image) (3.2.2)\n",
+            "Requirement already satisfied: pillow in /usr/local/lib/python3.7/dist-packages (from med2image) (7.1.2)\n",
+            "Requirement already satisfied: python-dateutil>=2.1 in /usr/local/lib/python3.7/dist-packages (from matplotlib->med2image) (2.8.2)\n",
+            "Requirement already satisfied: kiwisolver>=1.0.1 in /usr/local/lib/python3.7/dist-packages (from matplotlib->med2image) (1.4.4)\n",
+            "Requirement already satisfied: cycler>=0.10 in /usr/local/lib/python3.7/dist-packages (from matplotlib->med2image) (0.11.0)\n",
+            "Requirement already satisfied: pyparsing!=2.0.4,!=2.1.2,!=2.1.6,>=2.0.1 in /usr/local/lib/python3.7/dist-packages (from matplotlib->med2image) (3.0.9)\n",
+            "Requirement already satisfied: typing-extensions in /usr/local/lib/python3.7/dist-packages (from kiwisolver>=1.0.1->matplotlib->med2image) (4.1.1)\n",
+            "Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.7/dist-packages (from python-dateutil>=2.1->matplotlib->med2image) (1.15.0)\n",
+            "Collecting pudb\n",
+            "  Downloading pudb-2022.1.2.tar.gz (219 kB)\n",
+            "\u001b[K     |████████████████████████████████| 219 kB 68.4 MB/s \n",
+            "\u001b[?25hCollecting urwid>=1.1.1\n",
+            "  Downloading urwid-2.1.2.tar.gz (634 kB)\n",
+            "\u001b[K     |████████████████████████████████| 634 kB 52.2 MB/s \n",
+            "\u001b[?25hCollecting pygments>=2.7.4\n",
+            "  Downloading Pygments-2.13.0-py3-none-any.whl (1.1 MB)\n",
+            "\u001b[K     |████████████████████████████████| 1.1 MB 41.6 MB/s \n",
+            "\u001b[?25hCollecting jedi<1,>=0.18\n",
+            "  Downloading jedi-0.18.1-py2.py3-none-any.whl (1.6 MB)\n",
+            "\u001b[K     |████████████████████████████████| 1.6 MB 46.2 MB/s \n",
+            "\u001b[?25hCollecting urwid_readline\n",
+            "  Downloading urwid_readline-0.13.tar.gz (7.9 kB)\n",
+            "  Installing build dependencies ... \u001b[?25l\u001b[?25hdone\n",
+            "  Getting requirements to build wheel ... \u001b[?25l\u001b[?25hdone\n",
+            "    Preparing wheel metadata ... \u001b[?25l\u001b[?25hdone\n",
+            "Requirement already satisfied: packaging>=20.0 in /usr/local/lib/python3.7/dist-packages (from pudb->pfmisc->med2image) (21.3)\n",
+            "Requirement already satisfied: parso<0.9.0,>=0.8.0 in /usr/local/lib/python3.7/dist-packages (from jedi<1,>=0.18->pudb->pfmisc->med2image) (0.8.3)\n",
+            "Building wheels for collected packages: med2image, pfmisc, pudb, urwid, urwid-readline\n",
+            "  Building wheel for med2image (setup.py) ... \u001b[?25l\u001b[?25hdone\n",
+            "  Created wheel for med2image: filename=med2image-2.6.6-py3-none-any.whl size=18880 sha256=e369ec7720056477475b07fed6618f7bc90e4f1f75c346a7ca784d16722ff97f\n",
+            "  Stored in directory: /root/.cache/pip/wheels/d7/0d/cc/a639b26b4e1ee1eac1671bceceb773694c0e6096e36adae857\n",
+            "  Building wheel for pfmisc (setup.py) ... \u001b[?25l\u001b[?25hdone\n",
+            "  Created wheel for pfmisc: filename=pfmisc-2.2.10-py3-none-any.whl size=45339 sha256=b80d34d5609d1cda3a822552c05599e5580d9c08cbd71d78defe27902d9805f6\n",
+            "  Stored in directory: /root/.cache/pip/wheels/d6/87/af/dfcd60b1cd80885b2b876f2b8f371ab0479925b1a8e42af2b0\n",
+            "  Building wheel for pudb (setup.py) ... \u001b[?25l\u001b[?25hdone\n",
+            "  Created wheel for pudb: filename=pudb-2022.1.2-py3-none-any.whl size=69098 sha256=94aa91d67c7f8b89f154072ab65f1c8d0bcc716ed54c3b6a568bbbc838d34e73\n",
+            "  Stored in directory: /root/.cache/pip/wheels/5e/92/c1/e3e89bc3921f89b17c3595c1cfc1ad485d580be00e6f2cf4b3\n",
+            "  Building wheel for urwid (setup.py) ... \u001b[?25l\u001b[?25hdone\n",
+            "  Created wheel for urwid: filename=urwid-2.1.2-cp37-cp37m-linux_x86_64.whl size=258332 sha256=7366726dc479a13d8598fc0111ab3c49ee28394e8171a0b1b650b0fcf007f4cc\n",
+            "  Stored in directory: /root/.cache/pip/wheels/79/77/cf/cae9cf1cc3f1f777f9db531424bbd9e15aa38e4ca28dbe499e\n",
+            "  Building wheel for urwid-readline (PEP 517) ... \u001b[?25l\u001b[?25hdone\n",
+            "  Created wheel for urwid-readline: filename=urwid_readline-0.13-py3-none-any.whl size=7576 sha256=7a95557ee0435cac6a4ee42aa53907cba678c6d4628834e488de19ed6d37194c\n",
+            "  Stored in directory: /root/.cache/pip/wheels/67/54/48/d63c65f1b0f25d47d10c1c062bc73d81b81ee2c25f76efe9c1\n",
+            "Successfully built med2image pfmisc pudb urwid urwid-readline\n",
+            "Installing collected packages: urwid, urwid-readline, pygments, jedi, pudb, pydicom, pfmisc, med2image\n",
+            "  Attempting uninstall: pygments\n",
+            "    Found existing installation: Pygments 2.6.1\n",
+            "    Uninstalling Pygments-2.6.1:\n",
+            "      Successfully uninstalled Pygments-2.6.1\n",
+            "Successfully installed jedi-0.18.1 med2image-2.6.6 pfmisc-2.2.10 pudb-2022.1.2 pydicom-2.3.0 pygments-2.13.0 urwid-2.1.2 urwid-readline-0.13\n"
+          ]
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "application/vnd.colab-display-data+json": {
+              "pip_warning": {
+                "packages": [
+                  "pygments"
+                ]
+              }
+            }
+          },
+          "metadata": {}
+        }
+      ],
+      "source": [
+        "!pip3 install med2image"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!brew install python3\n",
+        "\n",
+        "!pip install shutil\n",
+        "\n",
+        "!pip install nibabel\n",
+        "\n",
+        "!pip install numpy\n",
+        "\n",
+        "!pip install imageio\n",
+        "!pip install scipy"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "ht5zQwY2zfqP",
+        "outputId": "d535062e-b954-4d52-eab4-1efcef5af40c"
+      },
+      "execution_count": 6,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "/bin/bash: brew: command not found\n",
+            "Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/\n",
+            "\u001b[31mERROR: Could not find a version that satisfies the requirement shutil (from versions: none)\u001b[0m\n",
+            "\u001b[31mERROR: No matching distribution found for shutil\u001b[0m\n",
+            "Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/\n",
+            "Requirement already satisfied: nibabel in /usr/local/lib/python3.7/dist-packages (3.0.2)\n",
+            "Requirement already satisfied: numpy>=1.12 in /usr/local/lib/python3.7/dist-packages (from nibabel) (1.21.6)\n",
+            "Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/\n",
+            "Requirement already satisfied: numpy in /usr/local/lib/python3.7/dist-packages (1.21.6)\n",
+            "Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/\n",
+            "Requirement already satisfied: imageio in /usr/local/lib/python3.7/dist-packages (2.9.0)\n",
+            "Requirement already satisfied: pillow in /usr/local/lib/python3.7/dist-packages (from imageio) (7.1.2)\n",
+            "Requirement already satisfied: numpy in /usr/local/lib/python3.7/dist-packages (from imageio) (1.21.6)\n",
+            "Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/\n",
+            "Requirement already satisfied: scipy in /usr/local/lib/python3.7/dist-packages (1.7.3)\n",
+            "Requirement already satisfied: numpy<1.23.0,>=1.16.5 in /usr/local/lib/python3.7/dist-packages (from scipy) (1.21.6)\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!pip install nii2png"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "EOillOt00ZzJ",
+        "outputId": "2c54885f-ca98-4a90-e3dc-0b49fab6ddf8"
+      },
+      "execution_count": 7,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/\n",
+            "Collecting nii2png\n",
+            "  Downloading nii2png-0.3.0-py3-none-any.whl (7.1 kB)\n",
+            "Requirement already satisfied: scipy in /usr/local/lib/python3.7/dist-packages (from nii2png) (1.7.3)\n",
+            "Requirement already satisfied: nibabel in /usr/local/lib/python3.7/dist-packages (from nii2png) (3.0.2)\n",
+            "  Downloading nii2png-0.2.7-py3-none-any.whl (3.2 kB)\n",
+            "Installing collected packages: nii2png\n",
+            "Successfully installed nii2png-0.2.7\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        " cd ~/images/\n",
+        "python3 nii2png.py -i brain.nii -o png/"
+      ],
+      "metadata": {
+        "id": "COeEEnWC2_xL"
+      },
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}
